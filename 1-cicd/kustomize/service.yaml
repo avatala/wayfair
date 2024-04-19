@@ -1,0 +1,15 @@
+---
+# Define the load balancer that manages access to pod(s) running the app - even if only one pod, its ephemeral and needs the lb in front of it
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: rte66-
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: rte66-
+  type: LoadBalancer

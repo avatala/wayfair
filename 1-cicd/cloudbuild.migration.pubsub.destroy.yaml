@@ -1,0 +1,37 @@
+---
+steps:
+- id: "unlink billing"
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-eEuo'
+  - 'pipefail'
+  - '-c'
+  - |-
+    gcloud beta billing projects unlink $_TF_VAR_UNIQUE_NAME
+
+- id: "TF Init"
+  name: hashicorp/terraform
+  dir: ${_TF_DIR}
+  args:
+  - init
+  - -backend-config=bucket=${_TF_BUCKET}
+  - -backend-config=prefix=migrations/${_TF_VAR_UNIQUE_NAME}
+  
+- id: "TF Destroy"
+  name: hashicorp/terraform
+  dir: ${_TF_DIR}
+  args:
+  - destroy
+  - -auto-approve
+  env:
+  - TF_VAR_iac_project=$PROJECT_ID
+  - TF_VAR_unique_name=$_TF_VAR_UNIQUE_NAME
+  - TF_VAR_groups_email=$_TF_VAR_GROUP_EMAIL
+  - TF_VAR_parent_folder=$_TF_VAR_PARENT_FOLDER
+  - TF_VAR_services=$_TF_VAR_SERVICES
+  - TF_VAR_billing_account=$_TF_VAR_BILLING_ACCOUNT
+  - TF_VAR_iam_roles= $_TF_VAR_IAM_ROLES
+
+
+timeout: 3600s

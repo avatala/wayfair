@@ -1,0 +1,62 @@
+{
+	"validation_name": {
+		"0": "count"
+	},
+	"validation_type": {
+		"0": "Column"
+	},
+	"aggregation_type": {
+		"0": "count"
+	},
+	"source_table_name": {
+		"0": "Sales.SalesOrderHeader"
+	},
+	"source_column_name": {
+		"0": null
+	},
+	"source_agg_value": {
+		"0": "32621"
+	},
+	"target_table_name": {
+		"0": "public.SalesOrderHeader"
+	},
+	"target_column_name": {
+		"0": null
+	},
+	"target_agg_value": {
+		"0": "14"
+	},
+	"group_by_columns": {
+		"0": null
+	},
+	"primary_keys": {
+		"0": null
+	},
+	"num_random_rows": {
+		"0": null
+	},
+	"difference": {
+		"0": -32607.0
+	},
+	"pct_difference": {
+		"0": -99.9570828607
+	},
+	"pct_threshold": {
+		"0": 0.0
+	},
+	"validation_status": {
+		"0": "fail"
+	},
+	"run_id": {
+		"0": "e22d665a-f8a1-443d-9cef-a584a396b20d"
+	},
+	"labels": {
+		"0": []
+	},
+	"start_time": {
+		"0": 1671835793442
+	},
+	"end_time": {
+		"0": 1671835800682
+	}
+}

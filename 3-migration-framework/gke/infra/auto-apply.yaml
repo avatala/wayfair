@@ -1,0 +1,35 @@
+steps:
+
+# Terraform init
+- id: 'tf init'
+  name: 'hashicorp/terraform:1.3.4'
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - |
+      echo "########## TERRAFORM INIT #############"
+      cd 3-migration-framework/gke/infra/
+      terraform init
+
+# Terraform plan
+- id: 'tf plan'
+  name: 'hashicorp/terraform:1.3.4'
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - | 
+      echo "########## TERRAFORM PLAN #############"
+      cd 3-migration-framework/gke/infra/
+      terraform plan
+
+#Terraform apply
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.3.4'
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - | 
+      echo "########## TERRAFORM apply #############"
+      cd 3-migration-framework/gke/infra/      
+      terraform apply -auto-approve
+timeout: 2400s

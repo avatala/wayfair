@@ -1,0 +1,15 @@
+[
+  {
+    "name": "data",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "The pubsub message data"
+  },
+  {
+    "name": "created_time",
+    "type": "DATETIME",
+    "mode": "NULLABLE",
+    "defaultValueExpression": "CURRENT_DATETIME()",
+    "description": "automatic created date time"
+  }
+]

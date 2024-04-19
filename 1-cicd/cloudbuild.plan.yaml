@@ -1,0 +1,36 @@
+---
+steps:
+
+- id: "TF Init"
+  name: hashicorp/terraform
+  dir: ${_TF_DIR}
+  args:
+  - init
+  - -backend-config=bucket=${_TF_BUCKET}
+  - -backend-config=prefix=${_TF_PREFIX}
+
+- id: "get commit id"
+  name: 'gcr.io/cloud-builders/gcloud'
+  dir: ${_TF_DIR}
+  args:
+  - '-c'
+  - | 
+    touch example.auto.tfvars 
+    echo tag="\"$COMMIT_SHA\"" >> example.auto.tfvars
+    cat example.auto.tfvars
+  entrypoint: sh
+  
+- id: "TF Plan"
+  name: hashicorp/terraform
+  dir: ${_TF_DIR}
+  args:
+  - plan
+  - -out=terraform.tfplan
+  env:
+  - TF_VAR_iac_project=$PROJECT_ID
+  - TF_VAR_unique_name=$_TF_VAR_UNIQUE_NAME
+  - TF_VAR_parent_folder=$_TF_VAR_PARENT_FOLDER
+  - TF_VAR_billing_account=$_TF_VAR_BILLING_ACCOUNT
+  - TF_VAR_database_password= $_TF_VAR_DATABASE_PASSWORD
+
+timeout: 3600s

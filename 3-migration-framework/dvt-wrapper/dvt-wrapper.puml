@@ -1,0 +1,26 @@
+@startuml
+hide footbox
+title DVT Wrapper Flow
+
+actor "Database\nMigration User" as user
+participant "DVT\nWrapper" as dvtwrapper
+participant "DVT\nSystem" as dvt
+database "Source\nDatabase" as sourcedb
+database "Target\nDatabase" as targetdb
+
+user -> dvtwrapper: Single Payload
+activate dvtwrapper
+dvtwrapper -> dvt: Generate Data Validation Checks
+activate dvt
+
+loop for each table pair and validation type
+    sourcedb -> dvt: Extract Data
+    dvt -> targetdb: Compare Data
+    dvt --> dvtwrapper: Validation Results
+end
+
+dvtwrapper --> user: Combined Validation Results
+deactivate dvt
+deactivate dvtwrapper
+
+@enduml

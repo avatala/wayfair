@@ -1,0 +1,20 @@
+# TEMPLATE FOR SERVICE DEPLOYMENTS WITH WORKLOAD IDENTITY
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rte66-
+  labels:
+    app: rte66-
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rte66-
+  template:
+    metadata:
+      labels:
+        app: rte66-
+    spec:
+      serviceAccountName: workload-identity-ksa

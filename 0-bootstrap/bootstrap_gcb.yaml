@@ -1,0 +1,42 @@
+---
+steps:
+- id: "TF init"
+  name: hashicorp/terraform
+  args:
+  - init
+  - -backend-config=bucket=${_TF_BUCKET}
+  - -backend-config=prefix=${_TF_PREFIX}
+  
+- id: "TF plan"
+  name: hashicorp/terraform
+  dir: ${_TF_RELATIVE_DIR}
+  args:
+  - plan
+  - -out=terraform.tfplan
+#   - -var-file=tfvars/${_ENV_NAME}.tfvars
+  env:
+  - TF_VAR_iac_project=$PROJECT_ID
+  - TF_VAR_tf_state_bucket=$_TF_BUCKET
+  - TF_VAR_tf_state_prefix=$_TF_PREFIX
+  - TF_VAR_repo_owner=$_TF_REPO_OWNER
+  - TF_VAR_repo_name_infra=$_TF_REPO_NAME_INFRA
+
+- id: "TF apply"
+  name: hashicorp/terraform
+  dir: ${_TF_RELATIVE_DIR}
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - | 
+      # uncomment below to get trace level logs
+      # export TF_LOG=TRACE
+      terraform apply -auto-approve 
+      # echo "Crash Log:"
+      # cd ../../
+      # cat crash.log 
+  env:
+  - TF_VAR_iac_project=$PROJECT_ID
+  - TF_VAR_tf_state_bucket=$_TF_BUCKET
+  - TF_VAR_tf_state_prefix=$_TF_PREFIX
+  - TF_VAR_repo_owner=$_TF_REPO_OWNER
+  - TF_VAR_repo_name_infra=$_TF_REPO_NAME_INFRA

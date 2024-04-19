@@ -1,0 +1,91 @@
+steps:
+    - id: "Build image"
+      name: 'gcr.io/cloud-builders/docker'
+      args: ['build', '-t', 'gcr.io/$_CONTAINER_PROJECT/$_APP_NAME:$SHORT_SHA', '$_DIR_PREFIX/$_APP_DIR']
+
+    - id: "Push to GCR"
+      name: 'gcr.io/cloud-builders/docker'
+      args: ['push', 'gcr.io/$_CONTAINER_PROJECT/$_APP_NAME:$SHORT_SHA']
+
+    - id: "Kustomize image name"
+      name: "gcr.io/cloud-builders/gke-deploy"
+      entrypoint: 'bash'
+      args:
+      - '-eEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        echo SHORT_SHA="$SHORT_SHA"
+        cat << EOF >image-name.yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          # kustomize strategic merge runs before the namesuffix process so the matching app name is just the prefix:
+          name: rte66-
+        spec:
+          template:
+            spec:
+              # container name cannot be changed via kustomize from base so its injected here along with image source
+              containers:
+                - name: rte66-$_APP_NAME
+                  image: gcr.io/$_CONTAINER_PROJECT/$_APP_NAME:$SHORT_SHA
+                  ports:
+                    - containerPort: 5000
+              serviceAccountName: workload-identity-ksa
+        EOF
+
+    - id: "Kustomization from cicd variables"
+      name: "gcr.io/cloud-builders/gke-deploy"
+      entrypoint: 'bash'
+      args:
+      - '-eEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        ls
+        cat image-name.yaml
+        cat << EOF >kustomization.yaml
+        apiVersion: kustomize.config.k8s.io/v1beta1
+        kind: Kustomization
+
+        namespace: $_NAMESPACE
+        nameSuffix: $_APP_NAME
+
+        #merge the env vars from above - this runs before the namesuffix process regardless of order in this file
+        patchesStrategicMerge:
+        - image-name.yaml
+
+        commonLabels:
+          app: rte66-$_APP_NAME
+
+        # while this file lives in the service folder its running from the root of the repo so the base templates are directly below
+        resources:
+        - 1-cicd/kustomize/deployment.yaml
+        - 1-cicd/kustomize/service.yaml
+
+        EOF
+        echo "done with template"
+        kustomize build > $_DIR_PREFIX/$_APP_DIR/k8s.yaml
+        cat $_DIR_PREFIX/$_APP_DIR/k8s.yaml
+        # kustomize edit set image gcr.io/PROJECT/APP_NAME=gcr.io/$_CONTAINER_PROJECT/$_APP_NAME:$_SHORT_SHA
+
+        # export kustomize build to k8s file in application being deployed
+
+        echo deploying $_CLUSTER in $_ZONE
+        exit $?
+
+
+    - id: "Deploy to GKE in GCP"
+      name: "gcr.io/cloud-builders/gke-deploy"
+      args:
+      - run
+      - --filename=$_DIR_PREFIX/$_APP_NAME/k8s.yaml
+      - --location=$_ZONE
+      - --cluster=$_CLUSTER
+      - --project=$_DEPLOY_PROJECT
+      # kludge to use same substitution variables across fleet and non
+      env:
+      - app=$_APP_NAME
+      - zone=$_ZONE
+
+timeout: 3600s

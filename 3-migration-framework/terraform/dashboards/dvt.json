@@ -1,0 +1,187 @@
+{
+    "category": "CUSTOM",
+    "dashboardFilters": [],
+    "displayName": "dvt-dashboard",
+    "labels": {},
+    "mosaicLayout": {
+      "columns": 12,
+      "tiles": [
+        {
+          "height": 4,
+          "widget": {
+            "title": "target-agg-count [MEAN]",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_MEAN",
+                        "groupByFields": [],
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"logging.googleapis.com/user/target-agg-count\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_NONE"
+                      }
+                    }
+                  }
+                }
+              ],
+              "thresholds": [],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 6,
+          "xPos": 6,
+          "yPos": 0
+        },
+        {
+          "height": 4,
+          "widget": {
+            "title": "source-agg-count [MEAN]",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_MEAN",
+                        "groupByFields": [],
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"logging.googleapis.com/user/source-agg-count\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_NONE"
+                      }
+                    }
+                  }
+                }
+              ],
+              "thresholds": [],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 6,
+          "xPos": 0,
+          "yPos": 0
+        },
+        {
+          "height": 4,
+          "widget": {
+            "title": "difference [MEAN]",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_MEAN",
+                        "groupByFields": [],
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"logging.googleapis.com/user/difference\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_NONE"
+                      }
+                    }
+                  }
+                }
+              ],
+              "thresholds": [],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 6,
+          "xPos": 0,
+          "yPos": 4
+        },
+        {
+          "height": 4,
+          "widget": {
+            "title": "pct-difference [MEAN]",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_MEAN",
+                        "groupByFields": [],
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"logging.googleapis.com/user/pct-difference\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_NONE"
+                      }
+                    }
+                  }
+                }
+              ],
+              "thresholds": [],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 6,
+          "xPos": 6,
+          "yPos": 4
+        }
+      ]
+    }
+  }
